@@ -456,13 +456,6 @@ def retroceder_proceso(proceso_id):
 
 
 # ------------------------------------------------------
-# Crear tablas al iniciar (local y en Railway)
-# ------------------------------------------------------
-@app.before_first_request
-def create_tables():
-    db.create_all()
-
-# ------------------------------------------------------
 # Main
 # ------------------------------------------------------
 if __name__ == "__main__":
