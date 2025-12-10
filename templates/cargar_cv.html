@@ -1,0 +1,21 @@
+
+{% extends "base.html" %}
+{% block title %}Cargar hoja de vida{% endblock %}
+{% block content %}
+<h1>Cargar hoja de vida</h1>
+<form method="post" enctype="multipart/form-data" class="form-card">
+    <div class="form-group">
+        <label for="cv">Archivo de hoja de vida (.txt para demo)</label>
+        <input type="file" id="cv" name="cv" required>
+    </div>
+    <div class="form-group">
+        <label for="cargo">Cargo al que aplica *</label>
+        <input type="text" id="cargo" name="cargo" required>
+    </div>
+    <div class="form-group">
+        <label for="area">Área / Dependencia</label>
+        <input type="text" id="area" name="area">
+    </div>
+    <button class="btn btn-primary" type="submit">Procesar hoja de vida</button>
+</form>
+{% endblock %}

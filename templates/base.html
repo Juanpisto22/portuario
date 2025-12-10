@@ -1,0 +1,49 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Agente contractual DANCP{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+<nav class="navbar">
+    <div class="navbar-brand">Agente contractual DANCP</div>
+    <div class="navbar-links">
+        {% if current_user.is_authenticated %}
+            <span class="navbar-user">
+                {{ current_user.username }} ({{ current_user.rol }})
+            </span>
+            <a href="{{ url_for('index') }}">Procesos</a>
+            {% if current_user.rol == 'USUARIO' %}
+                <a href="{{ url_for('cargar_cv') }}">Cargar H.V</a>
+            {% endif %}
+            {% if current_user.rol == 'ABOGADO' %}
+                <a href="{{ url_for('mis_casos') }}">Mis casos</a>
+            {% endif %}
+            <a href="{{ url_for('logout') }}">Salir</a>
+        {% else %}
+            <a href="{{ url_for('login') }}">Iniciar sesión</a>
+        {% endif %}
+    </div>
+</nav>
+
+<main class="container">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    <div class="flash-container">
+        {% for category, message in messages %}
+            <div class="flash flash-{{ category }}">{{ message }}</div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+</main>
+
+<footer class="footer">
+    <small>Prototipo de flujo de contratación DANCP</small>
+</footer>
+</body>
+</html>

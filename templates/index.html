@@ -1,0 +1,45 @@
+
+{% extends "base.html" %}
+{% block title %}Procesos{% endblock %}
+{% block content %}
+<h1>Procesos de contratación</h1>
+
+{% if current_user.rol == 'USUARIO' %}
+<a class="btn btn-primary" href="{{ url_for('cargar_cv') }}">+ Nuevo proceso desde H.V</a>
+{% endif %}
+
+<table class="tabla">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Candidato</th>
+        <th>Cargo</th>
+        <th>Abogado</th>
+        <th>Estado</th>
+        <th>Creado</th>
+        <th>Acciones</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for p in procesos %}
+        <tr>
+            <td>{{ p.id }}</td>
+            <td>{{ p.nombre_candidato }}</td>
+            <td>{{ p.cargo }}</td>
+            <td>{{ p.abogado.username if p.abogado else '-' }}</td>
+            <td>{{ p.estado_actual() }}</td>
+            <td>{{ p.fecha_creacion.strftime("%d/%m/%Y %H:%M") }}</td>
+            <td>
+                <a class="btn btn-small" href="{{ url_for('detalle_proceso', proceso_id=p.id) }}">
+                    Ver detalle
+                </a>
+            </td>
+        </tr>
+    {% else %}
+        <tr>
+            <td colspan="7" style="text-align:center;">No hay procesos registrados.</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

@@ -1,0 +1,40 @@
+
+{% extends "base.html" %}
+{% block title %}Confirmar datos de H.V{% endblock %}
+{% block content %}
+<h1>Confirmar datos del candidato</h1>
+<p>Estos datos fueron detectados automáticamente desde la hoja de vida. Puedes ajustarlos antes de crear el proceso.</p>
+
+<form method="post" action="{{ url_for('confirmar_cv') }}" class="form-card">
+    <input type="hidden" name="cv_filename" value="{{ cv_filename }}">
+    <input type="hidden" name="cargo" value="{{ cargo }}">
+    <input type="hidden" name="area" value="{{ area }}">
+
+    <div class="form-group">
+        <label>Nombre del candidato *</label>
+        <input type="text" name="nombre_candidato" value="{{ datos.nombre_candidato }}" required>
+    </div>
+    <div class="form-group">
+        <label>Teléfono</label>
+        <input type="text" name="telefono" value="{{ datos.telefono }}">
+    </div>
+    <div class="form-group">
+        <label>Identificación</label>
+        <input type="text" name="identificacion" value="{{ datos.identificacion }}">
+    </div>
+    <div class="form-group">
+        <label>Correo</label>
+        <input type="email" name="correo" value="{{ datos.correo }}">
+    </div>
+    <div class="form-group">
+        <label>Cargo</label>
+        <input type="text" value="{{ cargo }}" disabled>
+    </div>
+    <div class="form-group">
+        <label>Área</label>
+        <input type="text" value="{{ area }}" disabled>
+    </div>
+
+    <button class="btn btn-primary" type="submit">Crear proceso y asignar abogado</button>
+</form>
+{% endblock %}

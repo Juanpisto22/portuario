@@ -1,0 +1,19 @@
+
+{% extends "base.html" %}
+{% block title %}Login{% endblock %}
+{% block content %}
+<h1>Iniciar sesión</h1>
+<form method="post" class="form-card form-narrow">
+    <div class="form-group">
+        <label>Usuario</label>
+        <input type="text" name="username" required>
+    </div>
+    <div class="form-group">
+        <label>Contraseña</label>
+        <input type="password" name="password" required>
+    </div>
+    <button class="btn btn-primary" type="submit">Entrar</button>
+    <p class="hint">Para demo: coordinador / abogado1 / abogado2 / abogado3 (clave: 1234)<br>
+       Primero visita: <code>/crear_usuarios_demo</code></p>
+</form>
+{% endblock %}

@@ -1,0 +1,63 @@
+
+{% extends "base.html" %}
+{% block title %}Detalle proceso {{ proceso.id }}{% endblock %}
+{% block content %}
+<h1>Proceso #{{ proceso.id }} – {{ proceso.nombre_candidato }}</h1>
+
+<div class="card">
+    <p><strong>Cargo:</strong> {{ proceso.cargo }}</p>
+    <p><strong>Área:</strong> {{ proceso.area or "-" }}</p>
+    <p><strong>Teléfono:</strong> {{ proceso.telefono or "-" }}</p>
+    <p><strong>Identificación:</strong> {{ proceso.identificacion or "-" }}</p>
+    <p><strong>Correo:</strong> {{ proceso.correo or "-" }}</p>
+    <p><strong>Abogado asignado:</strong> {{ proceso.abogado.username if proceso.abogado else "-" }}</p>
+    <p><strong>Estado actual:</strong> {{ proceso.estado_actual() }}</p>
+    <p><strong>Última actualización:</strong>
+        {{ proceso.fecha_actualizacion.strftime("%d/%m/%Y %H:%M") if proceso.fecha_actualizacion else "-" }}
+    </p>
+    {% if proceso.cv_filename %}
+        <p><strong>Hoja de vida:</strong>
+           <a href="{{ url_for('static', filename='uploads/' ~ proceso.cv_filename) }}" target="_blank">
+               Ver archivo
+           </a>
+        </p>
+    {% endif %}
+</div>
+
+<h2>Flujo de contratación</h2>
+<ul class="timeline">
+    {% for estado in ESTADOS %}
+        {% set idx = loop.index0 %}
+        <li class="{% if idx < proceso.estado_index %}done{% elif idx == proceso.estado_index %}current{% endif %}">
+            <span class="step-index">{{ loop.index }}</span>
+            <span class="step-name">{{ estado }}</span>
+        </li>
+    {% endfor %}
+</ul>
+
+{% if current_user.rol == 'ABOGADO' and current_user.id == proceso.abogado_id %}
+<div class="acciones">
+    <form method="post" action="{{ url_for('retroceder_proceso', proceso_id=proceso.id) }}">
+        <button type="submit" class="btn btn-secondary" {% if not proceso.puede_retroceder() %}disabled{% endif %}>
+            ← Retroceder
+        </button>
+    </form>
+
+    <form method="post" action="{{ url_for('avanzar_proceso', proceso_id=proceso.id) }}" class="form-inline">
+        <textarea name="observaciones" placeholder="Observaciones de esta transición (verificación, documentos, etc.)"></textarea>
+        <button type="submit" class="btn btn-primary" {% if not proceso.puede_avanzar() %}disabled{% endif %}>
+            Avanzar →
+        </button>
+    </form>
+</div>
+{% endif %}
+
+<h2>Observaciones acumuladas</h2>
+<div class="card">
+    {% if proceso.observaciones %}
+        <pre class="observaciones">{{ proceso.observaciones }}</pre>
+    {% else %}
+        <p>No hay observaciones registradas.</p>
+    {% endif %}
+</div>
+{% endblock %}

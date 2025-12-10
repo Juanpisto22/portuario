@@ -1,0 +1,39 @@
+
+{% extends "base.html" %}
+{% block title %}Mis casos{% endblock %}
+{% block content %}
+<h1>Mis casos como abogado</h1>
+
+<table class="tabla">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Candidato</th>
+        <th>Cargo</th>
+        <th>Estado</th>
+        <th>Creado</th>
+        <th>Acciones</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for p in procesos %}
+        <tr>
+            <td>{{ p.id }}</td>
+            <td>{{ p.nombre_candidato }}</td>
+            <td>{{ p.cargo }}</td>
+            <td>{{ p.estado_actual() }}</td>
+            <td>{{ p.fecha_creacion.strftime("%d/%m/%Y %H:%M") }}</td>
+            <td>
+                <a class="btn btn-small" href="{{ url_for('detalle_proceso', proceso_id=p.id) }}">
+                    Ver detalle
+                </a>
+            </td>
+        </tr>
+    {% else %}
+        <tr>
+            <td colspan="6" style="text-align:center;">No tienes casos asignados.</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
